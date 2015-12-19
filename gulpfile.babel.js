@@ -17,8 +17,8 @@ const PORT = 8888;
 const JS_VENDOR_MODULES = ['react', 'react-dom'];
 const JS_APP_FILE = 'app.js';
 const DIST_DIR = 'dist';
-const DIST_VENDOR_FILE = 'vendor.js'
-const DIST_APP_FILE = 'app.js'
+const DIST_VENDOR_FILE = 'vendor.js';
+const DIST_APP_FILE = 'app.js';
 
 const args = nopt({
   open: String
@@ -63,10 +63,10 @@ gulp.task('build:app', () => {
   const b = browserify({
     entries: [JS_APP_FILE]
   });
-  b.external(JS_VENDOR_MODULES)
+  b.external(JS_VENDOR_MODULES);
   b.transform(babelify, {
     presets: ['es2015', 'react']
-  })
+  });
   return bundleApp(b);
 });
 
