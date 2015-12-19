@@ -4,6 +4,7 @@ import gulp from 'gulp';
 import http from 'http';
 import nopt from 'nopt';
 import gutil from 'gulp-util';
+import eslint from 'gulp-eslint';
 import buffer from 'vinyl-buffer';
 import source from 'vinyl-source-stream';
 import babelify from 'babelify';
@@ -38,6 +39,13 @@ function bundleApp(b) {
 
 gulp.task('clean', () => {
   return del(DIST_DIR);
+});
+
+gulp.task('lint', () => {
+  return gulp.src(['app.js', __filename])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('build', ['build:vendor', 'build:app']);
@@ -98,6 +106,7 @@ gulp.task('serve', (callback) => {
 gulp.task('default', () => {
   runSequence(
     'clean',
+    'lint',
     'build',
     'watch',
     'serve'
