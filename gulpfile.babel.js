@@ -1,3 +1,4 @@
+import del from 'del';
 import opn from 'opn';
 import gulp from 'gulp';
 import http from 'http';
@@ -34,6 +35,10 @@ function bundleApp(b) {
     .pipe(buffer())
     .pipe(gulp.dest(DIST_DIR));
 };
+
+gulp.task('clean', () => {
+  return del(DIST_DIR);
+});
 
 gulp.task('build', ['build:vendor', 'build:app']);
 
@@ -92,6 +97,7 @@ gulp.task('serve', (callback) => {
 
 gulp.task('default', () => {
   runSequence(
+    'clean',
     'build',
     'watch',
     'serve'
