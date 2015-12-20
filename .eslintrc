@@ -1,24 +1,44 @@
 {
+  "ecmaFeatures": {
+    "jsx": true
+  },
   "env": {
     "browser": true,
     "node": true
   },
   "parser": "babel-eslint",
-  "plugins": ["react"],
+  "plugins": [
+    "react"
+  ],
   "rules": {
     "block-scoped-var": 2,
     "camelcase": 2,
-    "comma-style": [2, "last"],
-    "curly": [0, "all"],
-    "dot-notation": [2, {
-      "allowKeywords": true
-    }],
-    "eqeqeq": [2, "allow-null"],
+    "comma-style": [
+      2,
+      "last"
+    ],
+    "curly": [
+      0,
+      "all"
+    ],
+    "dot-notation": [
+      2,
+      {
+        "allowKeywords": true
+      }
+    ],
+    "eqeqeq": [
+      2,
+      "allow-null"
+    ],
     "guard-for-in": 2,
     "new-cap": 2,
     "no-bitwise": 2,
     "no-caller": 2,
-    "no-cond-assign": [2, "except-parens"],
+    "no-cond-assign": [
+      2,
+      "except-parens"
+    ],
     "no-debugger": 2,
     "no-empty": 2,
     "no-eval": 2,
@@ -37,13 +57,31 @@
     "no-undef": 2,
     "no-unused-vars": 2,
     "no-unreachable": 2,
-    "no-use-before-define": [2, "nofunc"],
+    "no-use-before-define": [
+      2,
+      "nofunc"
+    ],
     "no-with": 2,
-    "quotes": [2, "single"],
-    "jsx-quotes": [2, "prefer-double"],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "jsx-quotes": [
+      2,
+      "prefer-double"
+    ],
+    "react/jsx-uses-vars": 2,
+    "react/jsx-uses-react": 2,
+    "react/react-in-jsx-scope": 2,
     "semi": 2,
-    "strict": [2, "never"],
+    "strict": [
+      2,
+      "never"
+    ],
     "valid-typeof": 2,
-    "wrap-iife": [2, "inside"]
+    "wrap-iife": [
+      2,
+      "inside"
+    ]
   }
 }
