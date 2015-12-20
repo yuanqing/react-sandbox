@@ -1,7 +1,7 @@
 {
   "name": "react-sandbox",
   "version": "0.0.0",
-  "description": "A simple sandbox for hacking on React.",
+  "description": "A simple starter kit for React projects.",
   "author": "Lim Yuan Qing",
   "license": "MIT",
   "dependencies": {
