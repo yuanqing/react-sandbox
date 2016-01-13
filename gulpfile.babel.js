@@ -23,12 +23,6 @@ const DIST_DIR = 'dist';
 const DIST_VENDOR_FILE = 'vendor.js';
 const DIST_APP_FILE = 'app.js';
 
-const args = nopt({
-  open: String
-}, {
-  o: ['--open', 'google chrome']
-});
-
 const babelifyOptions = {
   presets: ['es2015', 'react']
 };
@@ -124,11 +118,16 @@ gulp.task('serve', (callback) => {
   http.createServer(ecstatic({
     root: '.'
   })).listen(PORT, () => {
+    const args = nopt({
+      open: Boolean
+    }, {
+      o: ['--open']
+    });
     if (args.open) {
       const url = 'http://localhost:' + PORT;
       gutil.log(gutil.colors.green('Opening', url));
       opn(url, {
-        app: args.open,
+        app: 'google chrome',
         wait: false
       }, callback);
     }
