@@ -129,7 +129,7 @@ gulp.task('serve', (callback) => {
       opn(url, {
         app: 'google chrome',
         wait: false
-      }, callback);
+      }).then(callback);
     }
   });
 });
