@@ -1,19 +1,19 @@
+import babelify from 'babelify';
+import browserify from 'browserify';
+import cssModulesify from 'css-modulesify';
 import del from 'del';
-import opn from 'opn';
-import gulp from 'gulp';
-import http from 'http';
-import nopt from 'nopt';
-import fs from 'fs-extra';
-import gutil from 'gulp-util';
+import ecstatic from 'ecstatic';
+import {ensureDirSync} from 'fs-extra';
+import {createServer} from 'http';
+import gulp, {dest, src} from 'gulp';
 import eslint from 'gulp-eslint';
+import {log, colors} from 'gulp-util';
+import nopt from 'nopt';
+import opn from 'opn';
+import runSequence from 'run-sequence';
 import buffer from 'vinyl-buffer';
 import source from 'vinyl-source-stream';
-import babelify from 'babelify';
-import ecstatic from 'ecstatic';
 import watchify from 'watchify';
-import browserify from 'browserify';
-import runSequence from 'run-sequence';
-import cssModulesify from 'css-modulesify';
 
 const PORT = 8888;
 const JS_VENDOR_MODULES = ['react', 'react-dom'];
@@ -25,13 +25,17 @@ const DIST_APP_FILE = 'app.js';
 
 function bundleApp(b) {
   return b.bundle()
+    .on('error', ({message, codeFrame}) => {
+      log(colors.red(message));
+      console.log(codeFrame);
+    })
     .pipe(source(DIST_APP_FILE))
     .pipe(buffer())
-    .pipe(gulp.dest(DIST_DIR));
+    .pipe(dest(DIST_DIR));
 };
 
 gulp.task('lint', () => {
-  return gulp.src([JS_APP_FILE, __filename])
+  return src([JS_APP_FILE, __filename])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
@@ -48,7 +52,7 @@ gulp.task('build:vendor', () => {
     .bundle()
     .pipe(source(DIST_VENDOR_FILE))
     .pipe(buffer())
-    .pipe(gulp.dest(DIST_DIR));
+    .pipe(dest(DIST_DIR));
 });
 
 const cssModulesifyOptions = {
@@ -57,7 +61,7 @@ const cssModulesifyOptions = {
 };
 
 gulp.task('build:app', () => {
-  fs.ensureDirSync(DIST_DIR);
+  ensureDirSync(DIST_DIR);
   const b = browserify({
     entries: [JS_APP_FILE]
   });
@@ -68,7 +72,7 @@ gulp.task('build:app', () => {
 });
 
 gulp.task('watch', () => {
-  fs.ensureDirSync(DIST_DIR);
+  ensureDirSync(DIST_DIR);
   const b = browserify({
     entries: [JS_APP_FILE],
     debug: true,
@@ -79,8 +83,8 @@ gulp.task('watch', () => {
   b.transform(babelify);
   b.plugin(cssModulesify, cssModulesifyOptions);
   b.plugin(watchify);
-  b.on('error', gutil.log);
-  b.on('log', gutil.log);
+  b.on('error', log);
+  b.on('log', log);
   b.on('update', () => {
     bundleApp(b);
   });
@@ -92,7 +96,7 @@ gulp.task('clean', () => {
 });
 
 gulp.task('serve', (callback) => {
-  http.createServer(ecstatic({
+  createServer(ecstatic({
     root: '.'
   })).listen(PORT, () => {
     const args = nopt({
@@ -102,7 +106,7 @@ gulp.task('serve', (callback) => {
     });
     if (args.open) {
       const url = 'http://localhost:' + PORT;
-      gutil.log(gutil.colors.green('Opening', url));
+      log(colors.green('Opening', url));
       opn(url, {
         app: 'google chrome',
         wait: false
